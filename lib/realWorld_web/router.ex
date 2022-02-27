@@ -21,9 +21,6 @@ defmodule RealWorldWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
-
-    live "/articles", ArticleLive.Index, :index
-    live "/articles/:id", ArticleLive.Show, :show
   end
 
   # Other scopes may use custom stacks.
@@ -95,5 +92,8 @@ defmodule RealWorldWeb.Router do
     post "/users/confirm", UserConfirmationController, :create
     get "/users/confirm/:token", UserConfirmationController, :edit
     post "/users/confirm/:token", UserConfirmationController, :update
+
+    live "/articles", ArticleLive.Index, :index
+    live "/articles/:id", ArticleLive.Show, :show
   end
 end
