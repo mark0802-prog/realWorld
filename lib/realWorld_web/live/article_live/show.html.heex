@@ -31,6 +31,7 @@
 <span><%= link "Delete", to: "#", class: "button", phx_click: "delete", phx_click: "delete", data: [confirm: "Are you sure?"] %></span> |
 <span><%= live_redirect "Back", to: Routes.article_index_path(@socket, :index) %></span>
 
+<%= if !is_nil(@current_user) do %>
 <.form class="card comment-form"
   let={f}
   for={@comment_changeset}
@@ -44,6 +45,7 @@
     </button>
   </div>
 </.form>
+<% end %>
 
 <table>
   <thead>
