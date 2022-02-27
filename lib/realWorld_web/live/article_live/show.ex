@@ -3,6 +3,8 @@ defmodule RealWorldWeb.ArticleLive.Show do
 
   alias RealWorld.Blogs
 
+  on_mount {RealWorldWeb.CurrentUserAssign, :user}
+
   @impl true
   def mount(_params, _session, socket) do
     {:ok, socket}
@@ -10,10 +12,21 @@ defmodule RealWorldWeb.ArticleLive.Show do
 
   @impl true
   def handle_params(%{"id" => id}, _, socket) do
-    {:noreply,
-     socket
-     |> assign(:page_title, page_title(socket.assigns.live_action))
-     |> assign(:article, Blogs.get_article!(id))}
+    article = Blogs.get_article!(id)
+    %{live_action: action, current_user: user} = socket.assigns
+    author_id = article.author_id
+
+    if action == :edit && user.id != author_id do
+      {:noreply,
+       socket
+       |> put_flash(:error, "You can't edit this article.")
+       |> push_redirect(to: Routes.article_show_path(socket, :show, article))}
+    else
+      {:noreply,
+       socket
+       |> assign(:page_title, page_title(socket.assigns.live_action))
+       |> assign(:article, article)}
+    end
   end
 
   defp page_title(:show), do: "Show Article"

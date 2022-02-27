@@ -10,8 +10,8 @@ defmodule RealWorldWeb.ArticleLiveTest do
 
   setup :register_and_log_in_user
 
-  defp create_article(_) do
-    article = article_fixture()
+  defp create_article(%{user: user}) do
+    article = article_fixture(%{author_id: user.id})
     %{article: article}
   end
 
