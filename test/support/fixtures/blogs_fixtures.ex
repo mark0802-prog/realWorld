@@ -1,4 +1,6 @@
 defmodule RealWorld.BlogsFixtures do
+  import RealWorld.AccountsFixtures
+
   @moduledoc """
   This module defines test helpers for creating
   entities via the `RealWorld.Blogs` context.
@@ -12,7 +14,8 @@ defmodule RealWorld.BlogsFixtures do
       attrs
       |> Enum.into(%{
         body: "some body",
-        title: "some title"
+        title: "some title",
+        author_id: Map.get(user_fixture(), :id)
       })
       |> RealWorld.Blogs.create_article()
 

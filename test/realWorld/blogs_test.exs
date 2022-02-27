@@ -7,6 +7,7 @@ defmodule RealWorld.BlogsTest do
     alias RealWorld.Blogs.Article
 
     import RealWorld.BlogsFixtures
+    import RealWorld.AccountsFixtures
 
     @invalid_attrs %{body: nil, title: nil}
 
@@ -21,7 +22,11 @@ defmodule RealWorld.BlogsTest do
     end
 
     test "create_article/1 with valid data creates a article" do
-      valid_attrs = %{body: "some body", title: "some title"}
+      valid_attrs = %{
+        body: "some body",
+        title: "some title",
+        author_id: Map.get(user_fixture(), :id)
+      }
 
       assert {:ok, %Article{} = article} = Blogs.create_article(valid_attrs)
       assert article.body == "some body"
@@ -63,6 +68,7 @@ defmodule RealWorld.BlogsTest do
         Blogs.insert_article_with_tags(%{
           title: "t",
           body: "b",
+          author_id: Map.get(user_fixture(), :id),
           tags_string: "Elixir, Phoenix, Nerves, Nx"
         })
 
@@ -70,6 +76,7 @@ defmodule RealWorld.BlogsTest do
         Blogs.insert_article_with_tags(%{
           title: "t",
           body: "b",
+          author_id: Map.get(user_fixture(), :id),
           tags_string: "Elixir"
         })
 
