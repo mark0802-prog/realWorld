@@ -91,6 +91,7 @@ defmodule RealWorld.BlogsTest do
     alias RealWorld.Blogs.Comment
 
     import RealWorld.BlogsFixtures
+    import RealWorld.AccountsFixtures
 
     @invalid_attrs %{body: nil}
 
@@ -105,7 +106,11 @@ defmodule RealWorld.BlogsTest do
     end
 
     test "create_comment/1 with valid data creates a comment" do
-      valid_attrs = %{body: "some body", article_id: Map.get(article_fixture(), :id)}
+      valid_attrs = %{
+        body: "some body",
+        article_id: Map.get(article_fixture(), :id),
+        author_id: Map.get(user_fixture(), :id)
+      }
 
       assert {:ok, %Comment{} = comment} = Blogs.create_comment(valid_attrs)
       assert comment.body == "some body"
