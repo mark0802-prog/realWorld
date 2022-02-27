@@ -30,3 +30,34 @@
 <span><%= live_patch "Edit", to: Routes.article_show_path(@socket, :edit, @article), class: "button" %></span> |
 <span><%= link "Delete", to: "#", class: "button", phx_click: "delete", phx_click: "delete", data: [confirm: "Are you sure?"] %></span> |
 <span><%= live_redirect "Back", to: Routes.article_index_path(@socket, :index) %></span>
+
+<.form class="card comment-form"
+  let={f}
+  for={@comment_changeset}
+  phx-submit="post_comment">
+  <div class="card-block">
+    <%= textarea f, :body, class: "form-control", placeholder: "Write a comment..." %>
+  </div>
+  <div class="card-footer">
+    <button class="btn btn-sm btn-primary">
+      Post Comment
+    </button>
+  </div>
+</.form>
+
+<table>
+  <thead>
+    <tr>
+      <th>Author</th>
+      <th>Body</th>
+    </tr>
+  </thead>
+  <tbody id="comments">
+    <%= for comment <- @article.comments do %>
+      <tr id={"comment-#{comment.id}"}>
+        <td><%= comment.author_id %></td>
+        <td><%= comment.body %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
